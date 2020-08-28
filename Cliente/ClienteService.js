@@ -10,8 +10,28 @@ console.log = function(d) { //
  log_stdout.write(util.format(d) + '\n');
 };
 
+let cocinado  = 0;
+let entregado = 0;
 
 solicitarPedido()
+var verificar = setInterval(function(){
+    estadoRestaurante()
+    if( cocinado == 2)
+    {
+        // Finalizar Pedido a Restaurante
+        clearInterval(verificar)
+        // Iniciar Pedido a Repartidor
+        var verificarRepartidor = setInterval(function(){
+            console.log("---> REPARTIDOR COMO VAS ")
+            estadoRepartidor()
+            if ( entregado == 2)
+            {
+                clearInterval(verificarRepartidor)
+                console.log("========== Gracias repartidor por entregarme mi comida :D ==========")
+            }
+        },4000)
+    }
+},4000)
 
 
 // ========================== ACCIONES DEL CLIENTE ============================
@@ -35,18 +55,60 @@ function solicitarPedido()
     axios(parametros)
         .then( function (response) {
             console.log("---> Restaurante ::: "+ response.data.res)
+            estadoRestaurante()
         })
         .catch( function (error) {
             console.error(error)
         });
 }
 
-function verificarEstado()
+function estadoRestaurante()
 {
+
+            console.log("---> RESTAURANTE COMO VA MI COMIDA ")
+            // Verificar estado del pedido en restaurante
+            let parametros = {
+                method: 'post',
+                url: 'http://localhost:3003/informarestado',
+                data: {
+                    cliente: "Christopher",
+                    pedido: "Hamburguesa Extra Queso con papas y Agua en Lata"
+                },
+                headers: {
+                    'Content-Type': 'application/json'
+                }   
+            }
+            axios(parametros)
+                .then( function (response) {
+                    console.log("---> Restaurante ::: "+ response.data.res)
+                    cocinado = response.data.estado
+                })
+                .catch( function (error) {
+                    console.error(error)
+                });
 
 }
 
-function verificarPedido()
+function estadoRepartidor()
 {
-
+    
+    // Verificar estado del pedido en restaurante
+    let parametros = {
+        method: 'post',
+        url: 'http://localhost:3002/informarestado',
+        datos : {
+            cliente : "Christopher"
+        },
+        headers: {
+            'Content-Type': 'application/json'
+        }   
+    }
+    axios(parametros)
+        .then( function (response) {
+            console.log("---> Repartidor ::: "+ response.data.res)
+            entregado = response.data.estado
+        })
+        .catch( function (error) {
+            console.error(error)
+        });
 }
