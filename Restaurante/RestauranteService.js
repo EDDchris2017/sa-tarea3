@@ -99,7 +99,7 @@ function avisarRepartidor(cliente,pedido)
     // Solicitar Pedido
     let parametros = {
         method: 'post',
-        url: 'http://localhost:3002/recibirentrega',
+        url: 'http://localhost:3004/recibirentrega-esb-repartidor',
         data: {
             cliente: cliente,
             pedido: pedido

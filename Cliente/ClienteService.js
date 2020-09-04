@@ -43,7 +43,7 @@ function solicitarPedido()
     // Solicitar Pedido
     let parametros = {
         method: 'post',
-        url: 'http://localhost:3003/recibirpedido',
+        url: 'http://localhost:3004/recibirpedido-esb',
         data: {
             cliente: "Christopher",
             pedido: "Hamburguesa Extra Queso con papas y Agua en Lata"
@@ -55,7 +55,7 @@ function solicitarPedido()
     axios(parametros)
         .then( function (response) {
             console.log("---> Restaurante ::: "+ response.data.res)
-            estadoRestaurante()
+            //estadoRestaurante()
         })
         .catch( function (error) {
             console.error(error)
@@ -69,7 +69,7 @@ function estadoRestaurante()
             // Verificar estado del pedido en restaurante
             let parametros = {
                 method: 'post',
-                url: 'http://localhost:3003/informarestado',
+                url: 'http://localhost:3004/informarestado-esb-restaurante',
                 data: {
                     cliente: "Christopher",
                     pedido: "Hamburguesa Extra Queso con papas y Agua en Lata"
@@ -92,10 +92,10 @@ function estadoRestaurante()
 function estadoRepartidor()
 {
     
-    // Verificar estado del pedido en restaurante
+    // Verificar estado del pedido con el repartidor
     let parametros = {
         method: 'post',
-        url: 'http://localhost:3002/informarestado',
+        url: 'http://localhost:3004/informarestado-esb-repartidor',
         datos : {
             cliente : "Christopher"
         },
